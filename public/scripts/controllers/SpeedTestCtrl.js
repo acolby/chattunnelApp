@@ -76,6 +76,7 @@ angular.module('chattunnel')
 				refToData.update({
 					'email': email
 				});
+				$cookieStore.put('_chattunnelSpeedTestCookee', 1);
 			};
 
 		}]);
