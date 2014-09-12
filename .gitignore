@@ -1,0 +1,9 @@
+node_modules
+/dist/
+.tmp
+.sass-cache
+.DS_Store
+.DS_Store?
+.ftppass
+.awsDeployKey.json
+/mylocalnotes/

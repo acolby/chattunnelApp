@@ -1,0 +1,35 @@
+<div class='row' style='height:100%;'>
+	<div style='z-index:1000;' class='col-sm-12 wholePage dark'>
+		<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px;' src='images/brand.png'/></a>
+		<div ng-hide='startTest'>
+			<div class="wholePageForm">
+				<h2 class='title'>Speed Test</h2>
+				<br>
+				<br>
+				<button ng-click='startTestNow()' class='btn btn-default'>start test</button>
+			</div>
+		</div>
+		<div ng-show='startTest && !testCompleted'>
+			<div class="wholePageForm">
+				<h2 class='title'>Running Test Now...</h2>
+				<br>
+				<h3 style='color:white;'>completed {{percentComplete}}%</h3>
+			</div>
+		</div>
+		<div ng-show='testCompleted && !haveEmail'>
+			<div class="wholePageForm">
+				<h2 class='title'></h2>
+				<br>
+				<h3 style='color:white;'>enter your email to join the raffle</h3>
+				<input ng-model='email' placeholder='email' class="usernameInput" type="text" maxlength="30" ng-model='userName' ui-keypress="{13:'enteredEmail(email)'}"/>
+			</div>
+		</div>
+		<div ng-show='haveEmail'>
+			<div class="wholePageForm">
+				<h2 class='title'>thank you</h2>
+				<br>
+				<h3 style='color:white;'>you'll be contacted if you win!</h3>
+			</div>
+		</div>
+	</div>
+</div>

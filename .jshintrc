@@ -1,0 +1,31 @@
+{
+  "node": true,
+  "browser": true,
+  "es5": false,
+  "esnext": true,
+  "bitwise": true,
+  "camelcase": false,
+  "curly": true,
+  "eqeqeq": false,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "regexp": true,
+  "undef": true,
+  "unused": false,
+  "strict": true,
+  "trailing": false,
+  "smarttabs": true,
+  "multistr":true,
+  "globals": {
+    "angular": false,
+    "log":false,
+    "mixpanel":false,
+    "$": false,
+    "io": false,
+    "cryptico": false,
+    "Firebase": false,
+    "Tinycon": false
+  }
+}

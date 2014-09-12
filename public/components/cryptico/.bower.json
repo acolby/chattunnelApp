@@ -1,0 +1,14 @@
+{
+  "name": "cryptico",
+  "homepage": "https://github.com/wwwtyro/cryptico",
+  "_release": "9291ece634",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "9291ece634d37415e66396d749d38e612d66f935"
+  },
+  "_source": "git://github.com/wwwtyro/cryptico.git",
+  "_target": "*",
+  "_originalSource": "cryptico",
+  "_direct": true
+}

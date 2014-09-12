@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <title>chattunnel</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <audio src="sounds/messageSent.mp3" id="sound_messageSent" autostart="false"></audio>
+    <audio src="sounds/messageReceived.mp3" id="sound_messageReceived" autostart="false"></audio>
+    <audio src="sounds/someoneEntered.mp3" id="sound_someoneEntered" autostart="false"></audio>
+
+    <script type="text/javascript">
+        window.isltIE10 = false;
+    </script>
+    <!--[if lt IE 9]>
+      window.isltIE10 = true;
+    <![endif]-->
+
+  </head>
+
+  <body ng-app="chattunnel">
+    <div style='height:100%;'>
+        <div ng-view="" style='height:100%;'></div>
+    </div>
+
+    <!-- libraries -->
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="components/angular-resource/angular-resource.js"></script>
+    <script src="components/angular-cookies/angular-cookies.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-ui/build/angular-ui.js"></script>
+    <script src="components/firebase/firebase.js"></script>
+    <script src="components/cryptico/cryptico.js"></script>
+    <script src="components/tinycon/tinycon.js"></script>
+
+    <!-- App -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/ChatroomCtrl.js"></script>
+    <script src="scripts/controllers/SpeedTestCtrl.js"></script>
+    
+    <script src="scripts/directives/modules/scrollGlue.js"></script>
+    <script src="scripts/directives/statusToIcon.js"></script>
+    
+    <script src="scripts/services/RSAService.js"></script>
+
+  </body>
+
+</html>

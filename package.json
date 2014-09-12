@@ -1,0 +1,14 @@
+{
+  "name": "cryptotunnel",
+  "version": "0.0.1",
+  "author": "Aaron Colby",
+  "private": true,
+  "license": "BSD",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.3.8",
+    "grunt": "^0.4.5",
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}

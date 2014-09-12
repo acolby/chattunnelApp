@@ -1,0 +1,310 @@
+<!--
+	copyright: aaron colby 2014.
+	tm: chattunnel
+	aaron@chattunnel.com
+-->
+
+<div class='fill-height fill-width '>
+	<div class='fill-width fill-height'>	
+		<div class='chatroom' ng-style='chatAreaStyle'>
+
+			<div class='visible-xs chatroom-mobile-top-bar blueBackground'>
+				<div class='text-center fill-height fill-width relative'>
+					<span class='text-invite-button chatroom-overview-section-right-button chatroom-invite-button absolute-left-top' data-toggle="modal" data-target="#viewContactsModal">
+						<span class='glyphicon glyphicon-user white'></span> ({{people.peopleHere.length - 1}})
+					</span>
+					<span class='text-chatroom-name text-white'>{{me.person.name}}</span>
+					<span class='text-invite-button chatroom-invite-button absolute-right-top' data-toggle="modal" data-target="#invitePeopleModal" ng-click='selectURLInput()'>invite</span>
+					<span ng-click='playsound = !playsound' class='text-invite-button chatroom-overview-section-right-button chatroom-sound-button-mobile'>
+						<span ng-show='playsound' class='glyphicon glyphicon glyphicon-volume-up white'></span>
+						<span ng-hide='playsound' class='glyphicon glyphicon glyphicon glyphicon-volume-off white'></span>
+					</span>
+				</div>
+			</div>
+
+			<div class="chatroom-chat-area">
+				<div scroll-glue ng-model='chatareaDisplayObject.glued' class='chatroom-messages-area'>
+
+					<div ng-show='people.peopleHere.length < 2 || people.peopleITrust.length < 2' class='chatroom-alert-displacer'>
+					</div>
+
+					<div class="alert alert-info chatroom-alert" role="alert" ng-show='people.peopleHere.length < 2'><strong>Heads up!</strong> no one is here with... you need to invite someone else to this tunnel</div>
+
+					<div class="alert alert-warning chatroom-alert" role="alert" ng-show='people.peopleITrust.length < 2 && people.peopleHere.length > 1'><strong>Allow People to see you're messages!</strong> you need to select who you will show your messages too</div>
+
+					<div class='message' ng-repeat='item in chatareaDisplayObject.items'>
+
+						<div class='message-container' ng-show='item.type === "tunnel_created"' >
+							<div class='message-icon-container hidden-xs'>
+								<img class='icon-medium' src='images/tunnel.png'></img>
+							</div>
+							<div class='message-content-container text-medium'>
+								<div class='message-content-withdate-container text-center'>
+									all messages are deleted from the server 24hrs after they are posted
+									<span class='message-date-container date-medium hidden-xs'></span>
+								</div>	
+							</div>
+						</div>
+
+						<!-- you_entered_room
+						<div class='message-container' ng-show='item.type === "you_entered_room"'>
+							<div class='message-content-container text-medium'>
+								<a href='https://splash.chattunnel.com' target='_blank'><span>chattunnel</span></a>
+							</div>
+							<div class='clear'></div>
+						</div>
+						-->
+
+						<!-- person entered the room -->
+						<div class='message-container' ng-show='item.type === "person_entered_room" && !item.person.me'>
+							<div class='message-icon-container hidden-xs glyph-large-container'>
+								<span class='glyphicon glyphicon-log-in'></span>
+							</div>
+							<div class='message-content-container text-medium'>
+								<div class='message-content-withdate-container'>
+									<span class='float-left fill-width text-medium text-center'>
+										<span class='name-medium'><span class='glyphicon glyphicon-log-in visible-xs-inline compress'></span>&nbsp;{{item.person.name}}</span> entered this tunnel<br/>
+										<span ng-show='item.person.status > 0'>
+											grant <span class='name-medium'>{{item.person.name}}</span> access to messages you send
+											<br/>
+											<div class="btn-group">
+												<button type="button" class="btn btn-default" ng-class='{active: item.person.trust}' ng-click='people.setTrust(item.person, true)'>yes <span class='glyphicon glyphicon-ok'></span> </button>
+												<button type="button" class="btn btn-default" ng-class='{active: !item.person.trust}' ng-click='people.setTrust(item.person, false)'>no <span class='glyphicon glyphicon-remove'></span></button>
+											</div>
+										</span>
+									</span>
+									<span class='message-date-container date-medium hidden-xs'>{{item.date | date:'h:mm a'}}</span>
+								</div>
+							</div>
+							<div class='clear'></div>
+						</div>
+
+
+						<!-- person left the room -->
+						<div class='message-container' ng-show='item.type === "person_left_room"'>
+							<div class='message-icon-container hidden-xs text-medium glyph-large-container'>
+								<span class='glyphicon glyphicon-log-out'></span>
+							</div>
+							<div class='message-content-container'>
+								<div class='message-content-withdate-container'>
+									<span class='float-left fill-width text-medium text-center'><span class='name-medium'>{{item.person.name}}</span> left this tunnel
+									</span>
+									<span class='message-date-container date-medium hidden-xs'>{{item.date | date:'h:mm a'}}</span>
+								</div>
+								<div class='clear'></div>
+							</div>
+							<div class='clear'></div>
+						</div>
+
+						<!-- type message_group -->
+						<div class='message-container message-group-container' ng-class='{true:"message-group-is-me", false:""}[item.person === me.person]' ng-show='item.type === "message_group"'>
+							<div class='message-icon-container hidden-xs'>
+								<!-- image goes here -->
+							</div>
+							<div class='message-content-container text-medium'>
+								<span class='name-medium'>{{item.person.name}}</span>
+									<span class='text-small' ng-show='item.sentTo.length > 1'>sent to <span ng-repeat='(key, value) in item.sentTo' ng-hide='value.me'>{{value.name}}</span>
+									</span>
+								</div>
+								<div ng-repeat='message in item.messages track by $index'>
+									<div class='message-content-withdate-container hidden-xs'>
+										<span class='float-left fill-width text-medium wordWrap'>{{message.contents}}
+										</span>
+
+										<span class='message-date-container date-medium'><span>{{message.date | date:'h:mm a'}}</span><span ng-click='setExploreMessageDetailsMessage(message)' data-toggle="modal" data-target="#exploreMessageDetails" class='glyphicon glyphicon-info-sign message-date-container-info'></span></span>
+									</div>
+									<div class='visible-xs message-group-message-container' ng-click='setExploreMessageDetailsMessage(message)' data-toggle="modal" data-target="#exploreMessageDetails">
+										<div class='date-small'>{{message.date | date:'h:mm a'}}</div>
+										<div class='text-medium wordWrap message-group-message'>{{message.contents}}
+										</div>
+									</div>
+									<div class='clear'></div>
+								</div>
+							<div class='clear'></div>
+						</div>
+						<div class='clear'></div>
+						<hr class='hidden-xs'/>
+					</div>
+					<div class='clear'></div>
+				</div>
+				<input ng-model='message' class="chatroom-message-input thenNoLeftBorder" placeholder="Type here..." ui-keypress="{13:'postMessage($event)'}" ng-keydown='messagekeypressed()' ng-focus='chatMessageInputFocus()' ng-blur='chatMessageInputBlurred()' maxlength="1000"/>
+				<button ng-hide='chatareaDisplayObject.glued' ng-click='chatareaDisplayObject.setGlued(true)' class='btn btn-default chatarea-bottom-right relative'>
+					<div class='glyph-large-container'>
+						<span class='glyphicon glyphicon-circle-arrow-down'>
+						</span>
+					</div>
+					<div ng-show='chatareaDisplayObject.numberOfUnreadMessages > 0' class='chatarea-bottom-right-badge'>
+						<span class='text-white text-medium'>{{chatareaDisplayObject.numberOfUnreadMessages}}</span>
+					</div>
+				</button>
+			</div>
+			<div class='chatroom-overview-section thinRightBorder hidden-xs'>
+				<div class='chatroom-overview-section-top blueBackground'>
+					<span class='float-left text-chatroom-name text-white'>{{me.person.name}}</span>
+					<span class='float-right text-invite-button chatroom-overview-section-right-button chatroom-invite-button relative' data-toggle="modal" data-target="#invitePeopleModal" ng-click='selectURLInput()'>invite</span>
+					<span ng-click='playsound = !playsound' class='text-invite-button chatroom-overview-section-right-button chatroom-sound-button'>
+						<span ng-show='playsound' class='glyphicon glyphicon glyphicon-volume-up white'></span>
+						<span ng-hide='playsound' class='glyphicon glyphicon glyphicon glyphicon-volume-off white'></span>
+					</span>
+				</div>
+				<div class='catagory'>
+					
+				</div>
+				
+				<div class='person' ng-click='people.setTrust(person, !person.trust)' ng-repeat='person in people.people' ng-show='person.status > 0 && person.me === false'>
+					<div class='float-left text-chatroom-name'>{{person.name}} <span status-to-icon status='person.status'></span></div>
+					<div class='float-right glyph-large-container' ng-if='person.trust' tooltip='click if you would like hide your messages from {{person.name}}' tooltip-placement='left'>
+						<span class='glyphicon glyphicon-ok'></span>
+					</div>
+					<div class='float-right glyph-large-container' ng-if='!person.trust' tooltip='click if you would like {{person.name}} to see messages you send' tooltip-placement='left'>
+						<span class='glyphicon glyphicon-remove'></span>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal fade" id='invitePeopleModal'>
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&nbsp;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">invite people</h4>
+						</div>
+						<div class="modal-body">
+							<p>to invite people copy the url and send it to them</p>
+							<input id='invitePeopleModalURL' ng-model='url' class='fill-width'/>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id='viewContactsModal'>
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&nbsp;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">people</h4>
+						</div>
+						<div class="modal-body">
+							grant access to people
+							<br/>
+							<br/>
+							<div class='person' ng-click='people.setTrust(person, !person.trust)' ng-repeat='person in people.people' ng-show='person.status > 0 && person.me === false'>
+								<div class='float-left text-chatroom-name'>{{person.name}} <span status-to-icon status='person.status'></span></div>
+								<div class='float-right glyph-large-container' ng-if='person.trust'>
+									<span class='glyphicon glyphicon-ok'></span>
+								</div>
+								<div class='float-right glyph-large-container' ng-if='!person.trust'>
+									<span class='glyphicon glyphicon-remove'></span>
+								</div>
+							<br/>
+							<br/>
+							</div>
+							<div class='clear'></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="modal fade" id='exploreMessageDetails'>
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header modal-header-cipher-details">
+							<h4 class="modal-title float-left">cipher details</h4>
+							<button type="button" class="btn btn-default float-right" data-dismiss="modal">ok</button>
+						</div>
+						<div class="modal-body">
+							<h4>received from server</h4>
+							<pre>{{exploreMessageDetailsMessage.fromServer | json}}</pre>
+							<h4>decrypted to</h4>
+							<pre>{{exploreMessageDetailsMessage.decryptedTo | json}}</pre>
+							<h4>decoded payload</h4>
+							<pre>{{exploreMessageDetailsMessage.decodedPayload | json}}</pre>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-hide='hideLoginScreen || showCreateScreen'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title">What's your nickname?</h3>
+				<input class="usernameInput" type="text" maxlength="14" ng-model='userName' ui-keypress="{13:'newUserNameSubmitted($event)'}"/>
+			</div>
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-show='showCreateScreen'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title"><img style='width:40px; top:5px;' src='images/lock_white.png' /> select RSA strength</h3>
+				<div class='text-center'>
+					<br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default" ng-class='{active: chatroomStrength === 512}' ng-click='chatroomStrength = 512'>512 bit</button>
+						<button type="button" class="btn btn-default" ng-class='{active: false}'>1024 bit (soon!)</button>
+						<button type="button" class="btn btn-default" ng-class='{active: false}'>2048 bit (soon!)</button>
+					</div>
+					<br>
+					<br>
+					<button type="button" class="btn btn-default" data-dismiss="modal" ng-click='createRoom()'>+ create</button>
+				</div>
+			</div>
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-show='testingSpeed'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title">testing key generation speed....</h3>
+			</div>
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-show='isltIE10'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title">this browser is not supported.... really, you are working with some old technology, do yourself a favor and update your shit!</h3>
+				<h3 class="title"><a style='font-size:30px;' href='https://www.google.com/chrome/browser/'>get Chrome!</a> then come back</h3>
+			</div>
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-show='generatingKeys'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title">generation {{chatroomStrength}} bit public-private key pair...</h3>
+			</div>
+		</div>
+
+		<div class='wholePage dark fill-width fill-height text-center' ng-show='warnEnphasize'>
+
+			<div style='position:relative; top:40%;' class="alert alert-info" role="alert" ng-show='people.peopleHere.length < 2'><strong>Heads up!</strong> no one is here with... you need to invite someone else to this tunnel</div>
+
+			<div style='position:relative; top:40%;' class="alert alert-warning" role="alert" ng-show='people.peopleITrust.length < 2 && people.peopleHere.length > 1'><strong>Allow people to see you're messages!</strong> you need to select who can see the messages you see</div>
+
+			<div style='position:relative; top:40%;'>
+				<button ng-click='warnEnphasize = false' class='btn btn-default'>OK!</button>
+			</div>
+
+		</div>
+
+		<div class='wholePage dark fill-width fill-height' ng-hide='connected || showCreateScreen || isltIE10 || generatingKeys'>
+			<a href='http://splash.chattunnel.com'><img style='height:30px; position:relative; top:10px; left:5px;' src='images/brand.png'/></a>
+			<div class="wholePageForm">
+				<h3 class="title">Connecting...</h3>
+			</div>
+		</div>
+
+	</div>
+</div>
