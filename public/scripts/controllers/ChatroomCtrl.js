@@ -155,6 +155,9 @@ angular.module('chattunnel')
 						}
 						this.people.push(person);
 						this.numberOfPeople++;
+						if (person.status > 0 && person.me === false) {
+							$scope.chatareaDisplayObject.person_entered_room(person, new Date(person.date - serverTimeOffset));
+						}
 						this.calcutlateInstanceArrays();
 					},
 					'personFromPublicKey': function(publicKey) {
@@ -353,7 +356,6 @@ angular.module('chattunnel')
 				$scope.$watch('chatareaDisplayObject.glued', function(){
 					$scope.chatareaDisplayObject.setGlued($scope.chatareaDisplayObject.glued);
 				});
-				$scope.chatareaDisplayObject.you_entered_room();
 
 				// handle loggin the user in to the chatroom
 				$scope.newUserNameSubmitted = function($event) {
