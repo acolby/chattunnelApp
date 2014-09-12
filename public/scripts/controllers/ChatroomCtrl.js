@@ -155,9 +155,6 @@ angular.module('chattunnel')
 						}
 						this.people.push(person);
 						this.numberOfPeople++;
-						if (person.status > 0 && person.me === false) {
-							$scope.chatareaDisplayObject.person_entered_room(person, new Date(person.date - serverTimeOffset));
-						}
 						this.calcutlateInstanceArrays();
 					},
 					'personFromPublicKey': function(publicKey) {
