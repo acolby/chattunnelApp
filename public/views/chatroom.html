@@ -127,7 +127,7 @@
 					</div>
 					<div class='clear'></div>
 				</div>
-				<input ng-model='message' class="chatroom-message-input thenNoLeftBorder" placeholder="Type here..." ui-keypress="{13:'postMessage($event)'}" ng-keydown='messagekeypressed()' ng-focus='chatMessageInputFocus()' ng-blur='chatMessageInputBlurred()' maxlength="1000"/>
+				<input ng-model='message' class="chatroom-message-input thenNoLeftBorder" placeholder="Type here..." ui-keypress="{13:'postMessage($event)'}" ng-keydown='messagekeypressed()' ng-focus='chatMessageInputFocus()' ng-blur='chatMessageInputBlurred()' maxlength="5000"/>
 				<button ng-hide='chatareaDisplayObject.glued' ng-click='chatareaDisplayObject.setGlued(true)' class='btn btn-default chatarea-bottom-right relative'>
 					<div class='glyph-large-container'>
 						<span class='glyphicon glyphicon-circle-arrow-down'>
