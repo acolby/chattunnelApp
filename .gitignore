@@ -7,3 +7,4 @@ node_modules
 .ftppass
 .awsDeployKey.json
 /mylocalnotes/
+/certs/
