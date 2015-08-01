@@ -4,8 +4,8 @@ var http = require('http');
 var fs = require('fs');
 
 var options = {
-    key: fs.readFileSync('certs/server-key.pem'),
-    cert: fs.readFileSync('certs/server-cert.pem')
+    key: fs.readFileSync('./certs/server-key.pem'),
+    cert: fs.readFileSync('./certs/server-cert.pem')
 };
 
 var app = express();
