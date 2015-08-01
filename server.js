@@ -13,7 +13,7 @@ app.use(requireHTTPS);
 app.use(express.static('./public'));
 
 // Create an HTTP service.
-http.createServer(app).listen(3000);
+http.createServer(app).listen(80);
 // Create an HTTPS service identical to the HTTP service.
 https.createServer(options, app).listen(443);
 
